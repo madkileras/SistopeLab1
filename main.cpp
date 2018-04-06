@@ -42,7 +42,9 @@ int main(int argc, char **argv){
 	imageControl.loadBMP(cstr);
 
 
-    cout << imageControl.getRGBpixel(0,0)[R]<<endl;
+    cout <<"R:"<< imageControl.getRGBpixel(300,300)[R]<<" "
+         <<"G:"<< imageControl.getRGBpixel(300,300)[G]<<" "
+         <<"B:"<< imageControl.getRGBpixel(300,300)[B]<<endl;
 
 	return 0;
 }

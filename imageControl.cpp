@@ -29,9 +29,9 @@ unsigned char *  ImageControl::loadBMP(char* filename){
             data[j] = data[j+2];
             data[j+2] = tmp;
             image[i][j/3]=(int*)malloc(sizeof(int)*3);
-            image[i][j/3][0]=(int)data[j]; 
-            image[i][j/3][0]=(int)data[j+1];
-            image[i][j/3][0]=(int)data[j+2];
+            image[i][j/3][R]=(int)data[j]; 
+            image[i][j/3][G]=(int)data[j+1];
+            image[i][j/3][B]=(int)data[j+2];
 
             //cout << "R: "<< (int)data[j] << " G: " << (int)data[j+1]<< " B: " << (int)data[j+2]<< endl;
         }      
@@ -42,4 +42,29 @@ unsigned char *  ImageControl::loadBMP(char* filename){
 
 int* ImageControl::getRGBpixel(int i,int j){
     return image[i][j];    
+}
+
+void ImageControl::blancoYnegro(int umbral){
+    byn= (int***)malloc(sizeof(int**)*imageHeight);
+    for (int i=0;i< imageHeight;i++){
+        byn[i]=(int**)malloc(sizeof(int*)*imageWidth); 
+        for(int j=0;j<imageWidth;j++){
+            byn[i][j]=(int*)malloc(sizeof(int)*3);
+            if(lum(getRGBpixel(i,j))>umbral){
+                byn[i][j][R]=255;
+                byn[i][j][G]=255;
+                byn[i][j][B]=255;
+            }
+            else{
+                byn[i][j][R]=0;
+                byn[i][j][G]=0;
+                byn[i][j][B]=0;
+            }
+        }
+    }
+    return;
+}
+
+int ImageControl::lum(int * pixel){
+    return pixel[R]*0.3+pixel[G]*0.59+pixel[B]*0.11;
 }
