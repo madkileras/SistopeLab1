@@ -5,6 +5,9 @@
 #include "imageControl.hpp"
 #include <string>
 using namespace std;
+#define R 0
+#define G 1
+#define B 2
 int main(int argc, char **argv){
 
     //DECLARACION DE VARIABLES PARA ARGUMENTOS RECIBIDOS
@@ -33,16 +36,13 @@ int main(int argc, char **argv){
     //SE IMPRIMEN LOS VALORES RESCATADOS DESDE LA CONSOLA
     cout << endl;
     cout<<c<<" "<<u<<" "<<n<<" "<<b;
-
-
-	string str= "imagen.bmp";
+	string str= "imagen2.bmp";
 	char *cstr = &str[0u];
-
-
 	ImageControl imageControl=ImageControl();
 	imageControl.loadBMP(cstr);
 
 
+    cout << imageControl.getRGBpixel(0,0)[R]<<endl;
 
 	return 0;
 }
