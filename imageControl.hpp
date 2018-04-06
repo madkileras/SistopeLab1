@@ -9,7 +9,7 @@ using namespace std;
 
 class ImageControl{
 	private:
-		vector<vector<vector<int>>> image;
+		int*** image;
 		int imageWidth;
 		int imageHeight;
 
@@ -18,7 +18,7 @@ class ImageControl{
 		unsigned char* loadBMP(char* filename); 
 		
 		//funcion que obtiene un vector que contiene el grado RGB del pixel señalado
-		vector<int> getRGBpixel(int i,int j);
+		int* getRGBpixel(int i,int j);
 
 		
 };

@@ -36,7 +36,7 @@ int main(int argc, char **argv){
     //SE IMPRIMEN LOS VALORES RESCATADOS DESDE LA CONSOLA
     cout << endl;
     cout<<c<<" "<<u<<" "<<n<<" "<<b;
-	string str= "imagen2.bmp";
+	string str= "tiger.bmp";
 	char *cstr = &str[0u];
 	ImageControl imageControl=ImageControl();
 	imageControl.loadBMP(cstr);
@@ -46,3 +46,4 @@ int main(int argc, char **argv){
 
 	return 0;
 }
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                
