@@ -17,8 +17,12 @@ class ImageControl{
 		int*** escala;
 		int imageWidth;
 		int imageHeight;
+		short bits;
+		unsigned char *header;
 
 	public:
+		//constructor
+		ImageControl(void);
 		//funcion que carga la imagen en la variable de la clase image
 		unsigned char* loadBMP(char* filename); 
 		
@@ -29,5 +33,5 @@ class ImageControl{
 		void blancoYnegro(int umbral);
 
 		int lum(int* pixel);
-		
+		~ImageControl(void);
 };

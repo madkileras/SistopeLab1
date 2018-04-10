@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include<iostream>
+#include <iostream>
 #include "imageControl.hpp"
 #include <string>
 using namespace std;
@@ -36,15 +36,17 @@ int main(int argc, char **argv){
     //SE IMPRIMEN LOS VALORES RESCATADOS DESDE LA CONSOLA
     cout << endl;
     cout<<c<<" "<<u<<" "<<n<<" "<<b;
-	string str= "tiger.bmp";
+	string str= "imagen.bmp";
+	//cout << "HOLA";
 	char *cstr = &str[0u];
-	ImageControl imageControl=ImageControl();
+	//cout << "HOLA2";
+	ImageControl imageControl;
 	imageControl.loadBMP(cstr);
 
 
-    cout <<"R:"<< imageControl.getRGBpixel(300,300)[R]<<" "
-         <<"G:"<< imageControl.getRGBpixel(300,300)[G]<<" "
-         <<"B:"<< imageControl.getRGBpixel(300,300)[B]<<endl;
+    //cout <<"R:"<< imageControl.getRGBpixel(300,300)[R]<<" "
+      //   <<"G:"<< imageControl.getRGBpixel(300,300)[G]<<" "
+        // <<"B:"<< imageControl.getRGBpixel(300,300)[B]<<endl;
 
 	return 0;
 }
