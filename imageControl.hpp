@@ -15,10 +15,24 @@ class ImageControl{
 		int*** image;
 		int*** byn;
 		int*** escala;
+		char type[2];
+		int tam;
+		int reservado;
+		int offset;
+		int tamMet;
 		int imageWidth;
 		int imageHeight;
 		short bits;
+		short prof;
+		short numeroP;
+		int compresion;
+		int estructura;
+		int pxmh;
+		int pxmv;
+		int coloresUsados;
+		int coloresImportantes;
 		unsigned char *header;
+
 
 	public:
 		//constructor
@@ -33,5 +47,11 @@ class ImageControl{
 		void blancoYnegro(int umbral);
 
 		int lum(int* pixel);
+
+		int saveImage(char *filename);
+
+		//funcion que guarda una imagen
+
 		~ImageControl(void);
+	
 };

@@ -37,11 +37,14 @@ int main(int argc, char **argv){
     cout << endl;
     cout<<c<<" "<<u<<" "<<n<<" "<<b;
 	string str= "imagen.bmp";
+    string str2="imagen2.bmp";
+    char *cstr2=&str2[0u];
 	//cout << "HOLA";
 	char *cstr = &str[0u];
 	//cout << "HOLA2";
 	ImageControl imageControl;
 	imageControl.loadBMP(cstr);
+    imageControl.saveImage(cstr2);
 
 
     //cout <<"R:"<< imageControl.getRGBpixel(300,300)[R]<<" "
