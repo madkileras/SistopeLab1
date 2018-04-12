@@ -9,6 +9,7 @@ using namespace std;
 #define R 0
 #define G 1
 #define B 2
+#define A 3
 
 class ImageControl{
 	private:
@@ -48,10 +49,10 @@ class ImageControl{
 
 		int lum(int* pixel);
 
-		int saveImage(char *filename);
+		int saveImage(char *filename, int tag);
 
 		//funcion que guarda una imagen
 
 		~ImageControl(void);
-	
+
 };

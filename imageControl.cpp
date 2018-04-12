@@ -1,5 +1,10 @@
 #include "imageControl.hpp"
 
+#define R 0
+#define G 1
+#define B 2
+#define A 3
+
 ImageControl::ImageControl(void)
 {
     ;
@@ -13,7 +18,7 @@ unsigned char *  ImageControl::loadBMP(char* filename){
     if(f == NULL)
         throw "Argument Exception";
     //unsigned char info[54];
-    fread(&header, sizeof(unsigned char), 122, f); // read the 54-byte header
+    //fread(&header, sizeof(unsigned char), 122, f); // read the 54-byte header
     // extract image height and width from header
     /*imageWidth = *(int*)&info[18];
     imageHeight = *(int*)&info[22];
@@ -50,12 +55,16 @@ unsigned char *  ImageControl::loadBMP(char* filename){
     fread(&pxmv, sizeof(int), 1, f);
     fread(&coloresUsados, sizeof(int), 1, f);
     fread(&coloresImportantes, sizeof(int), 1, f);
+    fseek(f,0, SEEK_SET);
+    //offset=121;
+    fread(&header, sizeof(unsigned char), offset, f);
 
     //cout << type << endl;
 
 
     image = (int***)malloc(sizeof(int**)*imageHeight); 
-    int row_padded = (imageWidth*3 + 3) & (~3);
+    int row_padded = (imageWidth*4 + 4) & (~4);
+    cout << "row row_padded " << row_padded << endl;
     unsigned char* data = new unsigned char[row_padded];
     unsigned char tmp;  
     int j=0;
@@ -67,21 +76,19 @@ unsigned char *  ImageControl::loadBMP(char* filename){
         image[i]=(int**)malloc(sizeof(int*)*imageWidth);   
         fread(data, sizeof(unsigned char), row_padded, f);
 
-        for(j = 0; j < imageWidth*3; j += 3)
+        for(j = 0; j < imageWidth*4; j += 4)
         {
             //cout << "Se cayo acá"<<endl;
             //cout << j << endl;;
           // Convert (B, G, R) to (R, G, B)
-            tmp = data[j];
-            data[j] = data[j+2];
-            data[j+2] = tmp;
             
-            image[i][j/3]=(int*)malloc(sizeof(int)*3);
+            image[i][j/4]=(int*)malloc(sizeof(int)*4);
             //cout << "aqui: " << image[i][j/3] << " i: " << i <<" j: " << j << endl;
-            image[i][j/3][R]=(int)data[j]; 
-            cout << "image2 " << image[i][j/3][R] << endl;
-            image[i][j/3][G]=(int)data[j+1];
-            image[i][j/3][B]=(int)data[j+2];
+            image[i][j/4][B]=(int)data[j]; 
+            //cout << "image2 " << image[i][j/3][R] << endl;
+            image[i][j/4][G]=(int)data[j+1];
+            image[i][j/4][R]=(int)data[j+2];
+            image[i][j/4][A]=(int)data[j+3];
             //cout << "R: "<< (int)data[j] << " G: " << (int)data[j+1]<< " B: " << (int)data[j+2]<< endl;
         }
         //cout<<"sali del ciclo "<<j<<" con i "<<i<<endl;      
@@ -101,16 +108,18 @@ void ImageControl::blancoYnegro(int umbral){
     for (int i=0;i< imageHeight;i++){
         byn[i]=(int**)malloc(sizeof(int*)*imageWidth); 
         for(int j=0;j<imageWidth;j++){
-            byn[i][j]=(int*)malloc(sizeof(int)*3);
+            byn[i][j]=(int*)malloc(sizeof(int)*4);
             if(lum(getRGBpixel(i,j))>umbral){
+                byn[i][j][B]=255;
                 byn[i][j][R]=255;
                 byn[i][j][G]=255;
-                byn[i][j][B]=255;
+                byn[i][j][A]=255;
             }
             else{
+                byn[i][j][B]=0;
                 byn[i][j][R]=0;
                 byn[i][j][G]=0;
-                byn[i][j][B]=0;
+                byn[i][j][A]=255;
             }
         }
     }
@@ -121,10 +130,7 @@ int ImageControl::lum(int * pixel){
     return pixel[R]*0.3+pixel[G]*0.59+pixel[B]*0.11;
 }
 
-int ImageControl::saveImage(char *filename){
-    ofstream fout;
-    fout.open(filename);
-    unsigned int nOfBytes=(imageWidth*imageHeight*4);
+int ImageControl::saveImage(char *filename, int tag){
     //cout << "header 0: " << *(int*)&header[18] << endl;
     //fout.write((char*)&header,sizeof(header));
     cout << "aqui type: " << type << endl;
@@ -133,17 +139,17 @@ int ImageControl::saveImage(char *filename){
     FILE *prueba;
     prueba=fopen("imagen3.bmp","wb");
     cout << "hoho " << endl;
-    fwrite(&header,1,122,prueba);
+    fwrite(&header,1,offset,prueba);
     cout << "hoho2" << endl;
     
 
-    if (fout.is_open()){
+    if (true){
         cout << "Hola aquí" << endl;
         //fwrite(header,1,54,fout);
-        /*cout << type << endl;
+        cout << type << endl;
         cout << tam << endl;
         cout << reservado << endl;
-        cout << offset << endl;
+        cout << "offset " << offset << endl;
         cout << tamMet << endl;
         cout << imageWidth << endl;
         cout << imageHeight << endl;
@@ -154,7 +160,7 @@ int ImageControl::saveImage(char *filename){
         cout << pxmh << endl;
         cout << pxmv << endl;
         cout << coloresUsados << endl;
-        cout << coloresImportantes << endl;
+        cout << coloresImportantes << endl;/*
         fout.write((char*)(type),sizeof(type));
         fout.write((char*)(&tam),sizeof(tam));
         fout.write((char*)(&reservado),sizeof(reservado));
@@ -171,13 +177,27 @@ int ImageControl::saveImage(char *filename){
         fout.write((char*)(&coloresUsados),sizeof(coloresUsados));
         fout.write((char*)(&coloresImportantes),sizeof(coloresImportantes));
         fout.write("To",sizeof("To"));*/
-        for(int i = 0; i < imageHeight; i++)
+        cout << "Height " << imageHeight << endl;
+        cout << "Width " << imageWidth << endl;
+        for(int i=0; i<imageHeight ; i++)
         {
-            for(int j = 0; j < imageWidth*3; j += 3)
+            for(int j = 0; j < imageWidth*4; j += 4)
             {
-                fwrite(&(image[i][j/3][B]),sizeof(unsigned char),1,prueba);
-                fwrite(&(image[i][j/3][G]),sizeof(unsigned char),1,prueba);
-                fwrite(&(image[i][j/3][R]),sizeof(unsigned char),1,prueba);
+                if(tag==0){
+                    fwrite(&(image[i][j/4][B]),sizeof(unsigned char),1,prueba);
+                    fwrite(&(image[i][j/4][G]),sizeof(unsigned char),1,prueba);
+                    fwrite(&(image[i][j/4][R]),sizeof(unsigned char),1,prueba);
+                    fwrite(&(image[i][j/4][A]),sizeof(unsigned char),1,prueba);
+                        
+                }
+                else{
+                    fwrite(&(byn[i][j/4][B]),sizeof(unsigned char),1,prueba);
+                    fwrite(&(byn[i][j/4][G]),sizeof(unsigned char),1,prueba);
+                    fwrite(&(byn[i][j/4][R]),sizeof(unsigned char),1,prueba);
+                    fwrite(&(byn[i][j/4][A]),sizeof(unsigned char),1,prueba);
+                    
+
+                }
                 
                 
                 //cout << "holaaaa " << image[0][0][0] << endl;
@@ -198,7 +218,6 @@ int ImageControl::saveImage(char *filename){
 
         }
     }
-    fout.close();
     fclose(prueba);
     return 0;
 }

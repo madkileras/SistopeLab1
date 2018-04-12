@@ -8,6 +8,7 @@ using namespace std;
 #define R 0
 #define G 1
 #define B 2
+#define A 3
 int main(int argc, char **argv){
 
     //DECLARACION DE VARIABLES PARA ARGUMENTOS RECIBIDOS
@@ -36,15 +37,16 @@ int main(int argc, char **argv){
     //SE IMPRIMEN LOS VALORES RESCATADOS DESDE LA CONSOLA
     cout << endl;
     cout<<c<<" "<<u<<" "<<n<<" "<<b;
-	string str= "imagen.bmp";
-    string str2="imagen2.bmp";
+	string str= "imagen4.bmp";
+    string str2="imagen3.bmp";
     char *cstr2=&str2[0u];
 	//cout << "HOLA";
 	char *cstr = &str[0u];
 	//cout << "HOLA2";
 	ImageControl imageControl;
 	imageControl.loadBMP(cstr);
-    imageControl.saveImage(cstr2);
+    imageControl.blancoYnegro(200);
+    imageControl.saveImage(cstr2,1);
 
 
     //cout <<"R:"<< imageControl.getRGBpixel(300,300)[R]<<" "
