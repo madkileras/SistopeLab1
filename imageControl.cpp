@@ -126,6 +126,24 @@ void ImageControl::blancoYnegro(int umbral){
     return;
 }
 
+void ImageControl::escalaGrises(){
+    escala= (int***)malloc(sizeof(int**)*imageHeight);
+    for (int i=0;i< imageHeight;i++){
+        escala[i]=(int**)malloc(sizeof(int*)*imageWidth); 
+        for(int j=0;j<imageWidth;j++){
+                escala[i][j]=(int*)malloc(sizeof(int)*4);
+                //cout << lum(getRGBpixel(i,j))<<endl;
+                escala[i][j][B]=lum(getRGBpixel(i,j));
+                escala[i][j][R]=lum(getRGBpixel(i,j));
+                escala[i][j][G]=lum(getRGBpixel(i,j));
+                escala[i][j][A]=image[i][j][A];
+            
+        
+        }
+    }
+    return;
+}
+
 int ImageControl::lum(int * pixel){
     return pixel[R]*0.3+pixel[G]*0.59+pixel[B]*0.11;
 }
@@ -137,46 +155,13 @@ int ImageControl::saveImage(char *filename, int tag){
     //fseek(fout,0, SEEK_SET);
 
     FILE *prueba;
-    prueba=fopen("imagen3.bmp","wb");
+    prueba=fopen(filename,"wb");
     cout << "hoho " << endl;
     fwrite(&header,1,offset,prueba);
     cout << "hoho2" << endl;
     
 
     if (true){
-        cout << "Hola aquí" << endl;
-        //fwrite(header,1,54,fout);
-        cout << type << endl;
-        cout << tam << endl;
-        cout << reservado << endl;
-        cout << "offset " << offset << endl;
-        cout << tamMet << endl;
-        cout << imageWidth << endl;
-        cout << imageHeight << endl;
-        cout << prof << endl;
-        cout << numeroP << endl;
-        cout << compresion << endl;
-        cout << estructura << endl;
-        cout << pxmh << endl;
-        cout << pxmv << endl;
-        cout << coloresUsados << endl;
-        cout << coloresImportantes << endl;/*
-        fout.write((char*)(type),sizeof(type));
-        fout.write((char*)(&tam),sizeof(tam));
-        fout.write((char*)(&reservado),sizeof(reservado));
-        fout.write((char*)(&offset),sizeof(offset));
-        fout.write((char*)(&tamMet),sizeof(tamMet));
-        fout.write((char*)(&imageHeight),sizeof(imageHeight));
-        fout.write((char*)(&imageWidth),sizeof(imageWidth));
-        fout.write((char*)(&numeroP),sizeof(numeroP));
-        fout.write((char*)(&prof),sizeof(prof));
-        fout.write((char*)(&compresion),sizeof(compresion));
-        fout.write((char*)(&estructura),sizeof(estructura));
-        fout.write((char*)(&pxmh),sizeof(pxmh));
-        fout.write((char*)(&pxmv),sizeof(pxmv));
-        fout.write((char*)(&coloresUsados),sizeof(coloresUsados));
-        fout.write((char*)(&coloresImportantes),sizeof(coloresImportantes));
-        fout.write("To",sizeof("To"));*/
         cout << "Height " << imageHeight << endl;
         cout << "Width " << imageWidth << endl;
         for(int i=0; i<imageHeight ; i++)
@@ -190,13 +175,19 @@ int ImageControl::saveImage(char *filename, int tag){
                     fwrite(&(image[i][j/4][A]),sizeof(unsigned char),1,prueba);
                         
                 }
-                else{
+                else if(tag==1){
+                    
                     fwrite(&(byn[i][j/4][B]),sizeof(unsigned char),1,prueba);
                     fwrite(&(byn[i][j/4][G]),sizeof(unsigned char),1,prueba);
                     fwrite(&(byn[i][j/4][R]),sizeof(unsigned char),1,prueba);
                     fwrite(&(byn[i][j/4][A]),sizeof(unsigned char),1,prueba);
+                }
+                else{
                     
-
+                    fwrite(&(escala[i][j/4][B]),sizeof(unsigned char),1,prueba);
+                    fwrite(&(escala[i][j/4][G]),sizeof(unsigned char),1,prueba);
+                    fwrite(&(escala[i][j/4][R]),sizeof(unsigned char),1,prueba);
+                    fwrite(&(escala[i][j/4][A]),sizeof(unsigned char),1,prueba);
                 }
                 
                 

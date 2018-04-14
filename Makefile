@@ -1,7 +1,7 @@
 TARGET=imagecontrol
 
 CXX=g++
-CXXFLAGS=-std=c++11 -g -ggdb -Wall -O3
+CXXFLAGS=-std=c++11 -g -ggdb -O3
 OBJS=obj/imagecontrol.o obj/main.o
 
 all:
