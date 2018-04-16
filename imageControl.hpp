@@ -39,19 +39,28 @@ class ImageControl{
 		//constructor
 		ImageControl(void);
 		//funcion que carga la imagen en la variable de la clase image
-		unsigned char* loadBMP(char* filename); 
-		
+		unsigned char* loadBMP(char* filename);
+
 		//funcion que obtiene un vector que contiene el grado RGB del pixel señalado
 		int* getRGBpixel(int i,int j);
 
 		//funcion que genera la imagen en blanco y negro
 		void blancoYnegro(int umbral);
-                void escalaGrises();
+
+        void escalaGrises();
 		int lum(int* pixel);
 
+		//Función que guarda una imagen en un archivo BMP
+		//Recibe el nombre del archivo de salida y un TAG, que corresponde a si necesita guarda
+		//una imagen normal, en blanco y negro, o en escala de grises
 		int saveImage(char *filename, int tag);
 
-		//funcion que guarda una imagen
+		//Función que determina si la imagen es nearly black o no
+		//Retorna un booleano, true si es nearlyBlack o false si no
+		bool nearlyBlack(int umbral);
+
+		//Función que libera las imágenes del objeto
+		int freeImages();
 
 		~ImageControl(void);
 
